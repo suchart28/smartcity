@@ -3,39 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <title>Flood Report Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { text-align: center; margin-bottom: 20px; }
-    #map { height: 500px; width: 100%; margin-bottom: 20px; }
-    .report-form { margin-bottom: 20px; text-align: center; }
-    select, button { padding: 8px 12px; font-size: 16px; }
-    #chartContainer { width: 80%; max-width: 600px; margin: auto; }
+    body {
+      font-family: 'Prompt', sans-serif;
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      background-color: #000;
+      padding: 10px;
+      font-size: 20px;
+      margin: 0;
+      color: #00bcd4;
+      border-bottom: 1px solid #222;
+    }
+
+    .report-buttons {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      gap: 10px;
+      background-color: #1b1b1b;
+      border-bottom: 1px solid #222;
+    }
+
+    .report-btn {
+      flex: 1;
+      padding: 16px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #fff;
+      font-weight: bold;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .report-btn.active {
+      transform: scale(1.05);
+      border: 2px solid #fff;
+      box-shadow: 0 0 10px #fff;
+    }
+
+    .btn-low { background-color: #fbc02d; }
+    .btn-medium { background-color: #ff9800; }
+    .btn-high { background-color: #f44336; }
+
+    .send-section {
+      text-align: center;
+      background-color: #000;
+      padding: 10px;
+    }
+
+    #sendReport {
+      background-color: #00bcd4;
+      border: none;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 10px;
+      padding: 14px 20px;
+      cursor: pointer;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    #map {
+      flex: 1;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
   <h1>รายงานสถานะน้ำเมืองขอนแก่น</h1>
 
-  <div class="report-form">
-    <label>ระดับน้ำ:</label>
-    <select id="waterLevel">
-      <option value="ท่วมขา">ท่วมขา</option>
-      <option value="ท่วมเอว">ท่วมเอว</option>
-      <option value="ท่วมขัง">ท่วมขัง</option>
-    </select>
-    <button id="sendReport">ส่งรายงาน</button>
+  <div class="report-buttons">
+    <button class="report-btn btn-low" data-level="ท่วมขา">ท่วมขา</button>
+    <button class="report-btn btn-medium" data-level="ท่วมเอว">ท่วมเอว</button>
+    <button class="report-btn btn-high" data-level="ท่วมขัง">ท่วมขัง</button>
+  </div>
+
+  <div class="send-section">
+    <button id="sendReport">📡 ส่งรายงาน</button>
   </div>
 
   <div id="map"></div>
-  <div id="chartContainer">
-    <canvas id="reportChart"></canvas>
-  </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="firebase-config.js"></script>
   <script src="app.js"></script>
 </body>
