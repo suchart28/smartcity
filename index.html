@@ -39,17 +39,17 @@
 
     .report-btn {
       flex: 1;
-      padding: 16px;
-      font-size: 18px;
+      padding: 18px;
+      font-size: 20px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       color: #fff;
       font-weight: bold;
       transition: all 0.2s ease-in-out;
     }
 
-    .report-btn.active {
+    .report-btn:active {
       transform: scale(1.05);
       border: 2px solid #fff;
       box-shadow: 0 0 10px #fff;
@@ -58,25 +58,6 @@
     .btn-low { background-color: #fbc02d; }
     .btn-medium { background-color: #ff9800; }
     .btn-high { background-color: #f44336; }
-
-    .send-section {
-      text-align: center;
-      background-color: #000;
-      padding: 10px;
-    }
-
-    #sendReport {
-      background-color: #00bcd4;
-      border: none;
-      color: white;
-      font-size: 20px;
-      font-weight: bold;
-      border-radius: 10px;
-      padding: 14px 20px;
-      cursor: pointer;
-      width: 90%;
-      max-width: 400px;
-    }
 
     #map {
       flex: 1;
@@ -91,10 +72,6 @@
     <button class="report-btn btn-low" data-level="ท่วมขา">ท่วมขา</button>
     <button class="report-btn btn-medium" data-level="ท่วมเอว">ท่วมเอว</button>
     <button class="report-btn btn-high" data-level="ท่วมขัง">ท่วมขัง</button>
-  </div>
-
-  <div class="send-section">
-    <button id="sendReport">📡 ส่งรายงาน</button>
   </div>
 
   <div id="map"></div>

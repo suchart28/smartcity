@@ -8,42 +8,35 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// เก็บระดับน้ำที่เลือก
-let selectedLevel = null;
-
-const buttons = document.querySelectorAll('.report-btn');
-buttons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    buttons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedLevel = btn.dataset.level;
-  });
-});
-
-// ปุ่มส่งรายงาน
-document.getElementById('sendReport').addEventListener('click', () => {
-  if (!selectedLevel) {
-    alert('กรุณาเลือกระดับน้ำก่อนส่งรายงาน');
-    return;
-  }
-
+// ฟังก์ชันส่งข้อมูล
+function sendReport(level) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
       const report = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-        level: selectedLevel,
+        level,
         timestamp: Date.now()
       };
       db.ref('reports').push(report);
-      alert('ส่งรายงานเรียบร้อย!');
+      alert(`ส่งรายงาน \"${level}\" แล้ว ✅`);
+    }, () => {
+      alert('⚠️ ไม่สามารถระบุตำแหน่งได้');
     });
   } else {
-    alert('ไม่สามารถระบุตำแหน่งได้');
+    alert('⚠️ เบราว์เซอร์ของคุณไม่รองรับ GPS');
   }
+}
+
+// เมื่อคลิกปุ่มระดับน้ำ
+document.querySelectorAll('.report-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const level = btn.dataset.level;
+    sendReport(level);
+  });
 });
 
-// ดึงข้อมูลรายงานทั้งหมดมาแสดงบนแผนที่
+// แสดงหมุดจาก Firebase
 db.ref('reports').on('value', snapshot => {
   const data = snapshot.val();
   if (!data) return;
@@ -51,9 +44,9 @@ db.ref('reports').on('value', snapshot => {
     if (layer instanceof L.CircleMarker) map.removeLayer(layer);
   });
   Object.values(data).forEach(r => {
-    let color = r.level === 'ท่วมขา' ? '#fbc02d' :
-                r.level === 'ท่วมเอว' ? '#ff9800' :
-                '#f44336';
+    const color = r.level === 'ท่วมขา' ? '#fbc02d'
+                : r.level === 'ท่วมเอว' ? '#ff9800'
+                : '#f44336';
     L.circleMarker([r.lat, r.lng], {
       radius: 8,
       color,
