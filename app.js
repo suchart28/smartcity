@@ -2,11 +2,11 @@
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ✅ สร้างแผนที่ธีมมืด (Dark Mode)
+// ✅ สร้างแผนที่ธีมสว่าง (Light Mode)
 const map = L.map('map').setView([16.4419, 102.835], 13);
 
-// ใช้ tile layer แบบ Dark จาก CartoDB
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+// ใช้ tile layer จาก CartoDB Positron (สีสว่าง รายละเอียดชัด)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CartoDB'
 }).addTo(map);
 
@@ -66,7 +66,7 @@ db.ref('reports').on('value', snapshot => {
       radius: 8,
       color,
       fillColor: color,
-      fillOpacity: 0.85
+      fillOpacity: 0.9
     }).addTo(map)
       .bindPopup(`
         <b>ระดับน้ำ:</b> ${r.level}<br>
