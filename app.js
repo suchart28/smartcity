@@ -2,10 +2,12 @@
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ✅ สร้างแผนที่ OpenStreetMap (ศูนย์กลางเมืองขอนแก่น)
+// ✅ สร้างแผนที่ธีมมืด (Dark Theme)
 const map = L.map('map').setView([16.4419, 102.835], 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors'
+
+// ใช้ tile layer แบบ Dark จาก CartoDB
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap contributors &copy; CartoDB'
 }).addTo(map);
 
 // ✅ ฟังก์ชันส่งรายงานสถานะน้ำ
@@ -49,14 +51,14 @@ db.ref('reports').on('value', snapshot => {
   // วาด marker ใหม่ทั้งหมด
   Object.values(data).forEach(r => {
     const color =
-      r.level === 'ท่วมขา' ? '#fbc02d' :
+      r.level === 'ท่วมขา' ? '#2196f3' :  // 🔵 ฟ้าแทนเหลือง
       r.level === 'ท่วมเอว' ? '#ff9800' :
       '#f44336';
     L.circleMarker([r.lat, r.lng], {
       radius: 8,
       color,
       fillColor: color,
-      fillOpacity: 0.8
+      fillOpacity: 0.85
     }).addTo(map)
       .bindPopup(`ระดับน้ำ: ${r.level}`);
   });
