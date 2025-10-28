@@ -2,7 +2,7 @@
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ✅ สร้างแผนที่ธีมมืด (Dark Theme)
+// ✅ สร้างแผนที่ธีมมืด (Dark Mode)
 const map = L.map('map').setView([16.4419, 102.835], 13);
 
 // ใช้ tile layer แบบ Dark จาก CartoDB
@@ -54,13 +54,24 @@ db.ref('reports').on('value', snapshot => {
       r.level === 'ท่วมขา' ? '#2196f3' :  // 🔵 ฟ้าแทนเหลือง
       r.level === 'ท่วมเอว' ? '#ff9800' :
       '#f44336';
+
+    // แปลง timestamp เป็นวันเวลา
+    const date = new Date(r.timestamp);
+    const dateStr = date.toLocaleString('th-TH', {
+      dateStyle: 'short',
+      timeStyle: 'short'
+    });
+
     L.circleMarker([r.lat, r.lng], {
       radius: 8,
       color,
       fillColor: color,
       fillOpacity: 0.85
     }).addTo(map)
-      .bindPopup(`ระดับน้ำ: ${r.level}`);
+      .bindPopup(`
+        <b>ระดับน้ำ:</b> ${r.level}<br>
+        <b>วันที่:</b> ${dateStr}
+      `);
   });
 });
 
