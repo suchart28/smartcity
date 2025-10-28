@@ -4,10 +4,8 @@ const db = firebase.database();
 
 // ✅ สร้างแผนที่ธีมสว่าง (Light Mode)
 const map = L.map('map').setView([16.4419, 102.835], 13);
-
-// ใช้ tile layer จาก CartoDB Positron (สีสว่าง รายละเอียดชัด)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap contributors &copy; CartoDB'
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
 // ✅ ฟังก์ชันส่งรายงานสถานะน้ำ
